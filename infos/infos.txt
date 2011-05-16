@@ -1,0 +1,18 @@
+##
+# Before installation
+##
+
+Set HTTP rights in your module directory, for example :
+# cd /usr/local/centreon/www/modules
+# chown -R apache.apache pdfreports
+Notes: The user and group "apache" change for each Linux distribution.
+
+##
+# After installation
+##
+
+Copy file /usr/local/centreon/www/modules/pdfreports/files/pdfreports in /etc/cron.d/
+and restart your cron daemon :
+ /etc/init.d/cron restart
+ 
+ Notes: Check cron pdfreports file for path

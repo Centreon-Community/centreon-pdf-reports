@@ -1,0 +1,27 @@
+# ########################################
+#
+# Cron Configuration for PDF Reports, a reporting module for Centreon
+#
+# rewrite file with new cron line
+CRONTAB_EXEC_USER="www-data"
+
+############################
+# Cron for PDF Reports
+0 4 * * * www-data /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php yesterday >> /usr/local/centreon/log/reporteon.log 2>&1
+
+# Sunday
+0 3 * * 0 www-data /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php thisweek >> /usr/local/centreon/log/pdfreports.log 2>&1
+
+#0 4 * * * www-data /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php last7days >> /usr/local/centreon/log/pdfreports.log 2>&1
+
+#0 4 * * * www-data /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php thismonth >> /usr/local/centreon/log/pdfreports.log 2>&1
+
+#0 4 * * * www-data /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php last30days >> /usr/local/centreon/log/pdfreports.log 2>&1
+
+# Every first day of the month
+0 4 1 * * www-data /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php lastmonth >> /usr/local/centreon/log/pdfreports.log 2>&1
+
+#0 4 * * * www-data /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php thisyear >> /usr/local/centreon/log/pdfreports.log 2>&1
+
+#Every first january
+0 5 1 1 * www-data /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php lastyear >> /usr/local/centreon/log/pdfreports.log 2>&1
