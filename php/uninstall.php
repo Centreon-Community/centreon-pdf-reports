@@ -25,12 +25,6 @@ error_reporting(E_ALL);
 
     global $centreon_path;    
     
-    require_once("./modules/reporteon/lib/Crontab.php");
-    
-    $cron = new Crontab(get_current_user());
-    $cron->readCrontab();
-
-    $cron->writeCrontab();    
     
  */
 ?>

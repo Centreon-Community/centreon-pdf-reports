@@ -210,7 +210,6 @@ function getReportInfo($report_id = NULL) {
 	if (!$report_id ) return;	
 	global $pearDB; 
 	
-	//print "SELECT * FROM reporteon_reports WHERE report_id = '".$report_id."' LIMIT 1\n";
 	$DBRESULT =& $pearDB->query("SELECT * FROM pdfreports_reports WHERE report_id = '".$report_id."' LIMIT 1");
 	# Set base value
 	$report_info = array_map("myDecodeReport", $DBRESULT->fetchRow());
@@ -226,7 +225,6 @@ function getReportContactEmail($report_id = NULL) {
 	if (!$report_id ) return;	
 	global $pearDB; 
 	
-	//print "SELECT * FROM reporteon_reports_contactgroup_relation WHERE reports_rp_id = '".$report_id."'";
 	$DBRESULT =& $pearDB->query("SELECT contact_contact_id FROM pdfreports_reports_contactgroup_relation rrcr, contactgroup_contact_relation ccr WHERE reports_rp_id = '".$report_id."' AND rrcr.contactgroup_cg_id = ccr.contactgroup_cg_id");
 	for ($i = 0; $Cg =& $DBRESULT->fetchRow(); $i++)
 		$contacts[$i] = $Cg["contact_contact_id"];
@@ -388,12 +386,10 @@ function getServiceGroupReport($report_id) {
 								//$fields["service_hgPars"] = "";
 								while($report =& $DBRESULT->fetchRow())	{
 									if ($report["host_host_id"]) {
-										//print "INSERT INTO reporteon_host_report_relation VALUES ('', NULL, '".$report["host_host_id"]."',  '".$maxId["MAX(id)"]."')<br/>";
 										$DBRESULT2 =& $pearDB->query("INSERT INTO pdfreports_host_report_relation VALUES ('', NULL, '".$report["host_host_id"]."',  '".$maxId["MAX(id)"]."')");
 										//$fields["service_hPars"] .= $service["host_host_id"] . ",";
 									}
 									else if ($report["hostgroup_hg_id"]) {
-										//print "INSERT INTO reporteon_host_report_relation VALUES ('', '".$report["hostgroup_hg_id"]."', NULL, '".$maxId["MAX(id)"]."')<br/>";
 										$DBRESULT2 =& $pearDB->query("INSERT INTO pdfreports_host_report_relation VALUES ('', '".$report["hostgroup_hg_id"]."', NULL, '".$maxId["MAX(id)"]."')");
 										//$fields["service_hgPars"] .= $service["hostgroup_hg_id"] . ",";
 									}
@@ -470,7 +466,6 @@ function getServiceGroupReport($report_id) {
 			$DBRESULT =& $pearDB->query("UPDATE pdfreports_reports SET activate = '1' WHERE report_id = '".$key."'");
 			$DBRESULT2 =& $pearDB->query("SELECT report_description FROM `pdfreports_reports` WHERE report_id = '".$key."' LIMIT 1");
 			$row = $DBRESULT2->fetchRow();
-			//$oreon->CentreonLogAction->insertLog("reporteon_reports", $key, getHostServiceCombo($key, $row['service_description']), "enable");
 		}
 	}
 

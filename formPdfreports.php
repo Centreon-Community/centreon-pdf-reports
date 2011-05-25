@@ -73,7 +73,6 @@
 	$form->addElement('text', 'pdfreports_smtp_server_address', _("SMTP server address"), $attrsText);
 	$form->addElement('text', 'pdfreports_email_sender', _("Email Sender"), $attrsText);	
 	$form->addElement('text', 'pdfreports_report_author', _("Report Author"), $attrsText);
-//	$form->addElement('select', 'reporteon_report_header_logo', _("Header Logo"), $logoImg, array("id"=>"reporteon_report_header_logo", "onChange"=>"showLogo('reporteon_report_header_logo',this.value)"));
 	$form->addElement('select', 'pdfreports_report_header_logo', _("Header Logo"), $logoImg, array("id"=>"pdfreports_report_header_logo"));
 	
 	#
@@ -143,6 +142,3 @@
 	$tpl->assign('valid', $valid);
 	$tpl->display("formPdfreports.ihtml");
 ?>
-<!-- <script type="text/javascript">
-		showLogo('reporteon_report_header_logo', document.getElementById('reporteon_report_header_logo').value);
-</script> -->

@@ -2,7 +2,6 @@
 {$colorJS}
 <form {$form.attributes}>
 <table class="ListTable">
- 	<tr class="ListHeader"><td class="FormHeader" colspan="2">&nbsp;<img src='./img/icones/16x16/tool.gif'>&nbsp;&nbsp;{$form.header.reporteon}</td></tr>
  	<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2">&nbsp;<img src='./img/icones/16x16/step.gif'>&nbsp;&nbsp;{$form.header.pdfreports_email_config}</td></tr>
 	<tr class="list_one"><td class="FormRowField">{$form.pdfreports_smtp_server_address.label}</td><td class="FormRowValue">{$form.pdfreports_smtp_server_address.html}</td></tr>
 	<tr class="list_two"><td class="FormRowField">{$form.pdfreports_email_sender.label}</td><td class="FormRowValue">{$form.pdfreports_email_sender.html}</td></tr>	

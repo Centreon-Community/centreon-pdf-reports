@@ -39,12 +39,4 @@ error_reporting(E_ALL);
     updateOption($pearDB, "pdfreports_report_author",  "Centreon Server");
     updateOption($pearDB, "pdfreports_report_header_logo", "centreon.gif");
     
-/*    require_once("./modules/reporteon/lib/Crontab.php"); 
- 
-    $cron = new Crontab(get_current_user());
-
-    $cron->addCron("05", "01", "*", "*", "*", "php -q ". $centreon_path . "www/modules/reporteon/reporteon.php  >> " . $centreon_path . "log/reporteon.log 2>&1 ");
-    $cron->writeCrontab();
-*/
-
 ?>

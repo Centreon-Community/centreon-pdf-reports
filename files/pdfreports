@@ -34,10 +34,10 @@ CRONTAB_EXEC_USER="www-data"
 LOGFILE="/usr/share/centreon/log/pdfreports.log"
 
 ############################
-# daily
+# daily at 4 am
 0 4 * * * $CRONTAB_EXEC_USER /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php yesterday >> $LOGFILE/g 2>&1
 
-# weekely
+# weekely at 3 am
 0 3 * * 0 $CRONTAB_EXEC_USER /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php thisweek >> /usr/local/centreon/log/pdfreports.log 2>&1
 
 #0 4 * * * $CRONTAB_EXEC_USER /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php last7days >> /usr/local/centreon/log/pdfreports.log 2>&1
@@ -46,10 +46,10 @@ LOGFILE="/usr/share/centreon/log/pdfreports.log"
 
 #0 4 * * * $CRONTAB_EXEC_USER /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php last30days >> /usr/local/centreon/log/pdfreports.log 2>&1
 
-# Every first day of the month
+# Every first day of the month at 4 am
 0 4 1 * * $CRONTAB_EXEC_USER /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php lastmonth >> /usr/local/centreon/log/pdfreports.log 2>&1
 
 #0 4 * * * $CRONTAB_EXEC_USER /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php thisyear >> /usr/local/centreon/log/pdfreports.log 2>&1
 
-# Every first january
+# Every first january at 5 am
 0 5 1 1 * $CRONTAB_EXEC_USER /usr/bin/php -q /usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php lastyear >> /usr/local/centreon/log/pdfreports.log 2>&1

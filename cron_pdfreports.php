@@ -183,8 +183,6 @@ error_reporting(E_ALL);
 				 // Create the pChart object 
 				 $myPicture = new pImage(340,200,$MyData,TRUE);
 				
-				 // Set the default font properties 
-				 $myPicture->setFontProperties(array("FontName"=>$centreon_path . "/www/modules/reporteon/lib/pChart/fonts/Forgotte.ttf","FontSize"=>10,"R"=>80,"G"=>80,"B"=>80));
 				
 				 // Create the pPie object  
 				 $PieChart = new pPie($myPicture,$MyData);
@@ -199,12 +197,6 @@ error_reporting(E_ALL);
 				 // Draw a splitted pie chart 
 				 $PieChart->draw3DPie(170,100,array("Radius"=>100,"DataGapAngle"=>12,"DataGapRadius"=>10,"Border"=>TRUE));
 				
-				 // Write the legend box 
-				 $myPicture->setFontProperties(array("FontName"=>$centreon_path . "/www/modules/reporteon/lib/pChart/fonts/Silkscreen.ttf","FontSize"=>6,"R"=>0,"G"=>0,"B"=>0));
-				 $PieChart->drawPieLegend(40,175,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
-				
-				 // Render the picture (choose the best way) 
-				 $myPicture->autoOutput($centreon_path . "/www/modules/reporteon/example.draw3DPie.transparent.png");				
 				*/
 				
 				//print_r($stats);
@@ -264,8 +256,6 @@ error_reporting(E_ALL);
 
 //récupération des dates en fonction de la valeur de la variable $period
 
-//$period = getGeneralOptInfo("reporteon_email_sender") ;
-
 //$dates = getPeriodToReportFork($period);
 //$start_date = $dates[0] ;
 //$end_date = $dates[1];
@@ -300,8 +290,6 @@ foreach ( $reportinghostGroups as $key => $tab ) {
       	$stats = array();
 	$stats = getLogInDbForHostGroup($tab["hg_id"], $start_date, $end_date, $reportingTimePeriod);
 	//print_r($stats);
-	//tableau contenant la liste des pdf générés
-	//$Allfiles[] = pdfGen($gn, $start_date, $end_date, $stats, $l,   getGeneralOptInfo("reporteon_report_header_logo"));
 	
 	
 	
@@ -331,7 +319,6 @@ $files = array();
 
 //mailPdf($from,$key,$subject,$files);
 
-//mailer(getGeneralOptInfo("reporteon_email_sender"),$key,getGeneralOptInfo("reporteon_email_subject"),getGeneralOptInfo("reporteon_smtp_server_address"),$files);
 
 //}
 
