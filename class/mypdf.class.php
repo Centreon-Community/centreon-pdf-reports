@@ -498,8 +498,8 @@ $BACKGROUND_COLOR = ( $i % 2 ? "EDF4FF": "F7FAFF");
 $tbl2 .= <<<EOD
 
 <tr style="background-color:#$BACKGROUND_COLOR;" >
-<td width="90">$SERVICE_DESC</td>
-<td width="110">$HOST_NAME</td>
+<td width="90">$HOST_NAME</td>
+<td width="110">$SERVICE_DESC</td>
 <td width="60" style="background-color:#13EB3A;" >$OK_TP</td>
 <td width="50" style="background-color:#13EB3A;">$OK_A</td>
 <td width="60" style="background-color:#F8C706;">$WARNING_TP</td>
