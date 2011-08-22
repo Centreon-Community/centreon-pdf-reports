@@ -244,7 +244,11 @@ error_reporting(E_ALL);
 			//print_r($files);
 			
 			mailer(getGeneralOptInfo("pdfreports_email_sender"),$emails,$reportinfo['subject'],$reportinfo['mail_body'] , getGeneralOptInfo("pdfreports_smtp_server_address"),$files,$reportinfo['name'] );
-			
+			$files = null;
+			$Allfiles = null;
+			$emails = null;
+			$services = null ;
+			$hosts = null;
 		}
 
 	} catch (Exception $e) {
