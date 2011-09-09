@@ -19,8 +19,8 @@
  *   - Linagora
  */
 
-ini_set('display_errors',1);
-error_reporting(E_ALL);
+//ini_set('display_errors',1);
+//error_reporting(E_ALL);
 	/**
 	 * Configuration file
 	 */
@@ -103,15 +103,6 @@ error_reporting(E_ALL);
 		require_once $centreonClasspath . '/centreonACL.class.php';  
 		include_once $centreon_path . "www/include/reporting/dashboard/common-Func.php";
 		include_once $centreon_path . "www/include/reporting/dashboard/DB-Func.php";
-		
-		
-		
-		/* pChart library inclusions */
-	    /*   include($centreon_path . "/www/modules/pdfreports/lib/pChart/class/pData.class.php");
-	       include($centreon_path . "/www/modules/pdfreports/lib/pChart/class/pDraw.class.php");
-	       include($centreon_path . "/www/modules/pdfreports/lib/pChart/class/pPie.class.php");
-	       include($centreon_path . "/www/modules/pdfreports/lib/pChart/class/pImage.class.php");	*/	
-	
 	
 	/*
 	*	Main
@@ -154,92 +145,35 @@ error_reporting(E_ALL);
 				$stats = getLogInDbForHostGroup($hgs_id , $start_date, $end_date, $reportingTimePeriod);
 				
 				//print_r($stats);
-
-
-
-				/*
-				* test for including pie chart in report (like dashboard)
-				*/
-				/*
-				// Create and populate the pData object 
-				 $MyData = new pData();   
-				 $MyData->addPoints(array($stats["average"]["DOWN_TP"],
-							  $stats["average"]["UP_TP"],
-							  $stats["average"]["UNREACHABLE_TP"],
-							  $stats["average"]["UNDETERMINED_TP"]),
-						    "Hostgroups");  
-				 $MyData->setSerieDescription("Hostgroups","Hostgroups");
-				
-				 // Define the absissa serie 
-				 $MyData->addPoints(array("Down",
-							  "Up",
-							  "Unreachable",
-							  "Undeterminded"),
-						    "Labels");
-				 $MyData->setAbscissa("Labels");
-				 
-				
-				
-				 // Create the pChart object 
-				 $myPicture = new pImage(340,200,$MyData,TRUE);
-				
-				
-				 // Create the pPie object  
-				 $PieChart = new pPie($myPicture,$MyData);
-				
-				
-				 $Settings = array("R"=>255, "G"=>255, "B"=>255);
-				$myPicture->drawFilledRectangle(0,0,340,200,$Settings);
-				
-				  Enable shadow computing  
-				// $myPicture->setShadow(TRUE,array("X"=>3,"Y"=>3,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
-				
-				 // Draw a splitted pie chart 
-				 $PieChart->draw3DPie(170,100,array("Radius"=>100,"DataGapAngle"=>12,"DataGapRadius"=>10,"Border"=>TRUE));
-				
-				*/
-				
-				//print_r($stats);
 				//tableau contenant la liste des pdf générés
-				//$Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), $start_date, $end_date, $stats, $l,   getGeneralOptInfo("pdfreports_report_header_logo"),$centreon_path . "/www/modules/pdfreports/example.draw3DPie.transparent.png" );
-				$Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, $l, getGeneralOptInfo("pdfreports_report_header_logo") , $reportinfo["report_title"]  );
+				$Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, $l , $reportinfo["report_title"]  );
+				//$Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, $l, getGeneralOptInfo("pdfreports_report_header_logo") , $reportinfo["report_title"]  );
 				
 				//print_r($Allfiles); 
 			}
-			
-
-
-
-
-			
-			}
+		}
 			// Generate servicegroup reports
-			if (isset( $services ) && count($services) > 0 ) {			
+		if (isset( $services ) && count($services) > 0 ) {			
 			foreach ( $services['report_sg'] as $sg_id ) {      
 
 				$sg_stats = array();
 				$sg_stats = getLogInDbForServicesGroup($sg_id , $start_date, $end_date, $reportingTimePeriod);
 				
-				//print_r($stats);
-				
-				//print_r($stats);
+				//print_r($stats);				
+
 				//tableau contenant la liste des pdf générés
-				//$Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), $start_date, $end_date, $stats, $l,   getGeneralOptInfo("pdfreports_report_header_logo"),$centreon_path . "/www/modules/pdfreports/example.draw3DPie.transparent.png" );
-				$Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l, getGeneralOptInfo("pdfreports_report_header_logo") , $reportinfo["report_title"]  );
+				$Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l,  $reportinfo["report_title"]);
+				//$Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l, getGeneralOptInfo("pdfreports_report_header_logo") , $reportinfo["report_title"]  );
 				
 				//print_r($Allfiles); 
 			}
-			}
+		}
 
-			$emails = getReportContactEmail($report_id);
-			
-			//print_r( $emails );
-			
+			$emails = getReportContactEmail($report_id);			
+			//print_r( $emails );			
 			$files = array();
-			foreach ( $Allfiles as $file) {
-				
-				$files[basename($file)]["url"] = $file;	
-				
+			foreach ( $Allfiles as $file) {				
+				$files[basename($file)]["url"] = $file;					
 			}
 			//print_r($files);
 			
@@ -255,76 +189,6 @@ error_reporting(E_ALL);
 		programExit($e->getMessage());
 	}
 
-
-//init_pdf_header();
-
-//récupération des dates en fonction de la valeur de la variable $period
-
-//$dates = getPeriodToReportFork($period);
-//$start_date = $dates[0] ;
-//$end_date = $dates[1];
-
-/*
-* Getting service group start
-*/
-//$reportingTimePeriod = getreportingTimePeriod();
-
-
-//$serviceGroups = getAllServiceGroups();
-
-/*
-foreach ( $serviceGroups as $key => $tab ) {
-       $sgn = $tab["sg_name"];
-
-      	$stats = array();
-	$stats = getLogInDbForServicesGroup($tab["sg_id"], $start_date, $end_date, $reportingTimePeriod);
-	//tableau contenant la liste des pdf générés
-	$Allfiles[] = pdfGen($sgn, $start_date, $end_date, $stats, $l);
-	
- }
-*/
-
-
-/*
-$reportinghostGroups = getAllHostGroup();
-//print_r($reportinghostGroups);
-foreach ( $reportinghostGroups as $key => $tab ) {
-       $gn = $tab["hg_name"];
-
-      	$stats = array();
-	$stats = getLogInDbForHostGroup($tab["hg_id"], $start_date, $end_date, $reportingTimePeriod);
-	//print_r($stats);
-	
-	
-	
- }*/
-
-//print_r($stats);
-
-
-/*
-$time = time();
-$endDay = date("d", $time);
-$endYear = date("Y", $time);
-$endMonth = date("m", $time);
-
-foreach ( $config_array as $key => $contact ) {
-$files = array();
-
-
-
-    foreach ( $contact["hostgroup"] as $reportingGroup ) {
-	$filename = $endYear."-".$endMonth."-".$endDay."_".$reportingGroup.".pdf";
-	$files[$filename]["url"] = "/tmp/".$filename;	
-    }
-*/
-//print_r($files);
-
-
-//mailPdf($from,$key,$subject,$files);
-
-
-//}
 
 
 

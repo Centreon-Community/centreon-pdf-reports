@@ -38,5 +38,6 @@ error_reporting(E_ALL);
     updateOption($pearDB, "pdfreports_email_sender", "pdfreports@local.dom");
     updateOption($pearDB, "pdfreports_report_author",  "Centreon Server");
     updateOption($pearDB, "pdfreports_report_header_logo", "centreon.gif");
+	updateOption($pearDB, "pdfreports_path_gen", $centreon_path . "www/modules/pdfreports/generatedFiles");
     
 ?>

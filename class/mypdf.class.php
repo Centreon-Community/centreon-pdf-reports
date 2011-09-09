@@ -57,7 +57,7 @@ class MYPDF extends TCPDF {
     }
 
 
-  public  function ColoredTable($header,$data) {
+  public  function ColoredTable($header,$data,$piechart_img) {
 
 	// Colors, line width and bold font
         $this->SetFillColor(255, 0, 0);
@@ -108,7 +108,7 @@ class MYPDF extends TCPDF {
         )
 */
 
-
+	$PIECHART = $piechart_img;
 
 	// Services group state - récuperation des variables sans crochet ni guillemet pour les passer dans le tableau
 	$UP_TP_AV = $data["average"]["UP_TP"];
@@ -138,10 +138,10 @@ class MYPDF extends TCPDF {
   <td>$MAINTENANCE_A_AV</td>
 </tr>
 EOD;
- 
-	} else {
-	  
+ $ROWSPAN="8";
+	} else {	  
 	  $MAINTENANCE_TR = "";
+	  $ROWSPAN="7";
 	}
 
 	//calcul du total des alertes
@@ -149,19 +149,12 @@ EOD;
 
 //creation du tableau pour tcpdf, format html
 	
-	$tbl = <<<EOD
-	
-<img src="/usr/local/centreon/www/modules/pdfreports/example.draw3DPie.transparent.png">
-EOD;
-	
-	
-	
 	$tbl1 = <<<EOD
-
-		  <table border="1" align="center">
-			  <tr>
+		<table border="1" align="center">
+		  <tr  style="background-color:#F7FAFF;">
+			  <td rowspan="$ROWSPAN" border="0" width="125" align="center" valign="center" ><img src="$piechart_img" /></td>
 			  <td colspan="4" style="background-color:#D7D6DD;" >Hosts group state</td>
-			  </tr>
+		  </tr>
 		  <tr style="background-color:#D5DFEB;">
 		    <th>State</th>
 		    <th>Total Time</th>
@@ -194,7 +187,7 @@ EOD;
 		  $MAINTENANCE_TR
 		  
 		  <tr style="background-color:#EDF4FF;">
-		    <th style="background-color:#F0F0F0;">UNDETERMINED</th>
+		    <th style="background-color:#CCF8FF;">UNDETERMINED</th>
 		    <td>$UNDETERMINED_TP_AV %</td> 
 		    <td></td>
 		    <td></td>
@@ -209,7 +202,7 @@ EOD;
 		  </tr>
 		  
 		  </table>
-		  
+
 EOD;
 
 
@@ -243,7 +236,7 @@ $tbl2 = <<<EOD
 	    <td width="110" style="background-color:#F91E05;">Down</td>
 	    <td width="110" style="background-color:#82CFD8;">Unreachable</td>
 	    $MAINTENANCE_HEADER 
-	    <td width="110" style="background-color:#F0F0F0;">Undetermined</td>
+	    <td width="110" style="background-color:#CCF8FF;">Undetermined</td>
 	</tr>
 
 	<tr style="background-color:#D5DFEB;">
@@ -319,6 +312,9 @@ EOD;
 $this->writeHTML($tbl1, true, false, false, false, ''); 
 $this->writeHTML($tbl2, true, false, false, false, '');
 
+//
+@unlink($piechart_img) ;
+
 }
 
 
@@ -326,7 +322,7 @@ $this->writeHTML($tbl2, true, false, false, false, '');
 /* pour les services groupes */
     
     // Colored table
-   public function ServicesColoredTable($header,$data) {
+public function ServicesColoredTable($header,$data,$piechart_img) {
         // Colors, line width and bold font
         $this->SetFillColor(255, 0, 0);
         $this->SetTextColor(255);
@@ -343,6 +339,78 @@ $this->writeHTML($tbl2, true, false, false, false, '');
         $fill = 0;
 
 	//print_r($data);
+/*
+    [average] => Array
+        (
+            [OK_T] => 103680
+            [OK_A] => 6
+            [WARNING_T] => 0
+            [WARNING_A] => 0
+            [CRITICAL_T] => 0
+            [CRITICAL_A] => 0
+            [UNKNOWN_T] => 0
+            [UNKNOWN_A] => 0
+            [UNDETERMINED_T] => 155520
+            [MAINTENANCE_T] => 0
+            [OK_TP] => 40
+            [WARNING_TP] => 0
+            [CRITICAL_TP] => 0
+            [UNKNOWN_TP] => 0
+            [UNDETERMINED_TP] => 60
+            [MAINTENANCE_TP] => 0
+            [TOTAL_TIME] => 259200
+            [MEAN_TIME] => 103680
+            [TOTAL_ALERTS] => 6
+            [OK_MP] => 100
+            [WARNING_MP] => 0
+            [CRITICAL_MP] => 0
+            [UNKNOWN_MP] => 0
+        )
+*/	
+	
+	
+/*
+    [14_26] => Array
+        (
+            [service_id] => 26
+            [OK_T] => 172800
+            [OK_A] => 2
+            [WARNING_T] => 0
+            [WARNING_A] => 0
+            [UNKNOWN_T] => 0
+            [UNKNOWN_A] => 0
+            [CRITICAL_T] => 0
+            [CRITICAL_A] => 0
+            [UNDETERMINED_T] => 86400
+            [MAINTENANCE_T] => 0
+            [TOTAL_TIME] => 259200
+            [OK_TP] => 66.67
+            [WARNING_TP] => 0
+            [CRITICAL_TP] => 0
+            [UNKNOWN_TP] => 0
+            [UNDETERMINED_TP] => 33.33
+            [MAINTENANCE_TP] => 0
+            [MEAN_TIME] => 172800
+            [OK_MP] => 100
+            [WARNING_MP] => 0
+            [CRITICAL_MP] => 0
+            [UNKNOWN_MP] => 0
+            [MEAN_TIME_F] => 2d
+            [TOTAL_TIME_F] => 3d
+            [OK_TF] => 2d
+            [WARNING_TF] =>
+            [CRITICAL_TF] =>
+            [UNKNOWN_TF] =>
+            [UNDETERMINED_TF] => 1d
+            [MAINTENANCE_TF] =>
+            [TOTAL_ALERTS] => 2
+            [HOST_ID] => 14
+            [SERVICE_ID] => 26
+            [HOST_NAME] => ITCHY
+            [SERVICE_DESC] => Ping
+        )
+
+*/		
 
 	// Services group state - récuperation des variables sans crochet ni guillemet pour les passer dans le tableau
 	$OK_TP_AV = $data["average"]["OK_TP"];
@@ -363,6 +431,25 @@ $this->writeHTML($tbl2, true, false, false, false, '');
 
 	$UNDETERMINED_TP_AV = $data["average"]["UNDETERMINED_TP"];
 
+	if (isset($data["average"]["MAINTENANCE_TP"]) ) {
+	  $MAINTENANCE_TP_AV =  (isset($data["average"]["MAINTENANCE_TP"]) && $data["average"]["MAINTENANCE_TP"] != NULL ? $data["average"]["MAINTENANCE_TP"] : 0 );
+	  $MAINTENANCE_MP_AV = "" ;//(isset($data["average"]["MAINTENANCE_MP"]) && $data["average"]["MAINTENANCE_MP"] != NULL ? $data["average"]["MAINTENANCE_MP"] : 0 );
+	  $MAINTENANCE_A_AV = "" ;// (isset($data["average"]["MAINTENANCE_A"]) && $data["average"]["MAINTENANCE_A"] != NULL ? $data["average"]["MAINTENANCE_A"] : 0 );
+	  
+	  $MAINTENANCE_TR = <<<EOD
+<tr style="background-color:#EDF4FF;">
+  <th style="background-color:#CC99FF;">Schedule Downtime</th>
+  <td>$MAINTENANCE_TP_AV %</td> 
+  <td>$MAINTENANCE_MP_AV</td>
+  <td>$MAINTENANCE_A_AV</td>
+</tr>
+EOD;
+ $ROWSPAN="9";
+	} else {	  
+	  $MAINTENANCE_TR = "";
+	  $ROWSPAN="8";
+	}
+	
 	//calcul du total des alertes
 	$TOTAL_A_AV = $OK_A_AV + $WARNING_A_AV + $UNKNOWN_A_AV;
 
@@ -370,7 +457,8 @@ $this->writeHTML($tbl2, true, false, false, false, '');
 	
 	$tbl1 = <<<EOD
 <table border="1" align="center">
-	<tr>
+	<tr   border="0" >
+	<td rowspan="$ROWSPAN" border="0" width="125" align="center" valign="center" ><img src="$piechart_img" /></td>
 	<td colspan="4"  style="background-color:#D7D7DD;" >Services group state</td>
 	</tr>
 <tr>
@@ -384,7 +472,7 @@ $this->writeHTML($tbl2, true, false, false, false, '');
   <th style="background-color:#13EB3A;">Ok</th>
   <td style="background-color:#F7FAFF;">$OK_TP_AV %</td> 
   <td style="background-color:#F7FAFF;">$OK_MP_AV %</td>
-  <td style="background-color:#F7FAFF;">$OK_A_AV %</td>
+  <td style="background-color:#F7FAFF;">$OK_A_AV</td>
 </tr>
 
 <tr>
@@ -410,18 +498,16 @@ $this->writeHTML($tbl2, true, false, false, false, '');
   <td style="background-color:#EDF4FF;">$UNKNOWN_A_AV</td>
 </tr>
 
-
+$MAINTENANCE_TR
 
 <tr>
-  <th style="background-color:#F0F0F0;">Undertermined</th>
+  <th style="background-color:#CCF8FF;">Undertermined</th>
   <td style="background-color:#F7FAFF;">$UNDETERMINED_TP_AV %</td> 
   <td style="background-color:#F7FAFF;"></td>
   <td style="background-color:#F7FAFF;"></td>
-
 </tr>
 
 <tr>
-
   <th style="background-color:#CED3ED;">Total</th>
   <td style="background-color:#CED3ED;"></td>
   <td style="background-color:#CED3ED;"></td>
@@ -431,45 +517,51 @@ $this->writeHTML($tbl2, true, false, false, false, '');
 </table>
 EOD;
 
-
-
-
 // State Breakdowns For Host Services 
 
 //init du deuxième tableau
 
+if (isset($MAINTENANCE_TR) && $MAINTENANCE_TR != "") {
+  $MAINTENANCE_HEADER = '<td width="100" >Schedule Downtime</td>';
+  $MAINTENANCE_HEADER_LABEL = "<td width='100'>%</td>";
+  $HEADER_WIDTH = "720";
+} else {
+   $MAINTENANCE_HEADER = "";
+   $MAINTENANCE_HEADER_LABEL = "";
+   $HEADER_WIDTH = "640";
+}
+
+
 $tbl2 = <<<EOD
 
-<table border="1" align="center">
+<table border="1" align="center" valign="middle">
 	<tr>
-	<td width="750" style="background-color:#D7D6DD;" >State Breakdowns For Host Services</td>
+	<td width="$HEADER_WIDTH" style="background-color:#D7D6DD;" >State Breakdowns For Host Services</td>
 	</tr>
-	<tr style="background-color:#D5DFEB;">
+	<tr style="background-color:#D5DFEB;" >
 		<td colspan="2" width="200"  ></td>
-
-		<td width="110" >OK</td>
-		<td width="110" >Warning</td>
-		<td width="110" >Critical</td>
-		<td width="110" >Unknown</td>
-		<td width="110" >Undetermined</td>
+		<td width="80" >OK</td>
+		<td width="80" >Warning</td>
+		<td width="80" >Critical</td>
+		<td width="80" >Unknown</td>
+		$MAINTENANCE_HEADER
+		<td width="100" >Undetermined</td>
 	</tr>
 
 	<tr style="background-color:#D5DFEB;">
 		<td width="90" >Host Name</td>
 		<td width="110">Service</td>
-		<td width="60">%</td>
-		<td width="50">Alert</td>
-		<td width="60">%</td>
-
-		<td width="50">Alert</td>
-		<td width="60">%</td>
-		<td width="50">Alert</td>
-		<td width="60">%</td>
-		<td width="50">Alert</td>
-		<td width="110">%</td>
+		<td width="40">%</td>
+		<td width="40">Alert</td>
+		<td width="40">%</td>
+		<td width="40">Alert</td>
+		<td width="40">%</td>
+		<td width="40">Alert</td>
+		<td width="40">%</td>
+		<td width="40">Alert</td>
+		$MAINTENANCE_HEADER_LABEL
+		<td width="100">%</td>
 	</tr>
-		    
-
 EOD;
 
 
@@ -491,7 +583,12 @@ $CRITICAL_A = $tab["CRITICAL_A"];
 $UNKNOWN_TP = $tab["UNKNOWN_TP"];
 $UNKNOWN_A = $tab["UNKNOWN_A"];
 $UNDETERMINED_TP = $tab["UNDETERMINED_TP"];
-
+if (isset ($tab["MAINTENANCE_TP"])) {
+  $MAINTENANCE_TP =  "<td width='100' style='background-color:#CC99FF;'>".$tab["MAINTENANCE_TP"]."</td>";
+  
+} else {
+  $MAINTENANCE_TP = "";
+}
 
 $BACKGROUND_COLOR = ( $i % 2 ? "EDF4FF": "F7FAFF"); 
 
@@ -500,15 +597,16 @@ $tbl2 .= <<<EOD
 <tr style="background-color:#$BACKGROUND_COLOR;" >
 <td width="90">$HOST_NAME</td>
 <td width="110">$SERVICE_DESC</td>
-<td width="60" style="background-color:#13EB3A;" >$OK_TP</td>
-<td width="50" style="background-color:#13EB3A;">$OK_A</td>
-<td width="60" style="background-color:#F8C706;">$WARNING_TP</td>
-<td width="50" style="background-color:#F8C706;">$WARNING_A</td>
-<td width="60" style="background-color:#F91D05;">$CRITICAL_TP</td>
-<td width="50" style="background-color:#F91D05;">$CRITICAL_A</td>
-<td width="60" style="background-color:#DCDADA;">$UNKNOWN_TP</td>
-<td width="50" style="background-color:#DCDADA;">$UNKNOWN_A</td>
-<td width="110" style="background-color:#F0F0F0;">$UNDETERMINED_TP</td>
+<td width="40" style="background-color:#13EB3A;" >$OK_TP</td>
+<td width="40" style="background-color:#13EB3A;">$OK_A</td>
+<td width="40" style="background-color:#F8C706;">$WARNING_TP</td>
+<td width="40" style="background-color:#F8C706;">$WARNING_A</td>
+<td width="40" style="background-color:#F91D05;">$CRITICAL_TP</td>
+<td width="40" style="background-color:#F91D05;">$CRITICAL_A</td>
+<td width="40" style="background-color:#DCDADA;">$UNKNOWN_TP</td>
+<td width="40" style="background-color:#DCDADA;">$UNKNOWN_A</td>
+$MAINTENANCE_TP
+<td width="100" style="background-color:#CCF8FF;">$UNDETERMINED_TP</td>
 </tr>
 
 
@@ -529,7 +627,8 @@ EOD;
 $this->writeHTML($tbl1, true, false, false, false, ''); 
 $this->writeHTML($tbl2, true, false, false, false, ''); 
 
-
+//
+@unlink($piechart_img) ;
 
 
     } 

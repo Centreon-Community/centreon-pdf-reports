@@ -42,7 +42,6 @@ if (count($to) > 1 ) {
 
 //$mail->AddAddress($to);
 
-//$mail->Subject  = "Rapport de supervision de FAN pour SOlution Linux 2011";
 $mail->Subject  = $subject;
 $mail->Body     = $body;
 $mail->WordWrap = 50;
