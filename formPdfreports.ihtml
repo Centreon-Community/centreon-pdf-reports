@@ -8,6 +8,7 @@
 	<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2">&nbsp;<img src='./img/icones/16x16/step.gif'>&nbsp;&nbsp;{$form.header.pdfreports_report_config}</td></tr>
 	<tr class="list_one"><td class="FormRowField">{$form.pdfreports_report_author.label}</td><td class="FormRowValue">{$form.pdfreports_report_author.html}</td></tr>	
 	<tr class="list_two"><td class="FormRowField">{$form.pdfreports_report_header_logo.label}</td><td class="FormRowValue">{$form.pdfreports_report_header_logo.html}&nbsp;&nbsp;<img id='pdfreports_report_header_logo' src='./img/blank.gif'></td></tr>
+	<tr class="list_one"><td class="FormRowField">{$form.pdfreports_path_gen.label}</td><td class="FormRowValue">{$form.pdfreports_path_gen.html}</td></tr>
 </table>
 {if !$valid}
 	<div id="validForm">

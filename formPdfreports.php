@@ -48,7 +48,7 @@
 	##########################################################
 	# Var information to format the element
 	#
-	$attrsText 		= array("size"=>"40");
+	$attrsText 		= array("size"=>"50");
 	$attrsText2		= array("size"=>"5");
 	$attrsAdvSelect = null;
 
@@ -74,7 +74,8 @@
 	$form->addElement('text', 'pdfreports_email_sender', _("Email Sender"), $attrsText);	
 	$form->addElement('text', 'pdfreports_report_author', _("Report Author"), $attrsText);
 	$form->addElement('select', 'pdfreports_report_header_logo', _("Header Logo"), $logoImg, array("id"=>"pdfreports_report_header_logo"));
-	
+	$form->addElement('text', 'pdfreports_path_gen', _("Path to report files"), $attrsText);
+
 	#
 	## Form Rules
 	#
@@ -83,10 +84,14 @@
 			return rtrim($elem, "/")."/";
 	}
 	$form->applyFilter('__ALL__', 'myTrim');
+	$form->applyFilter('pdfreports_path_gen', 'slash');
+	$form->registerRule('is_writable_file_if_exist', 'callback', 'is_writable_file_if_exist');
+	$form->registerRule('is_writable_path', 'callback', 'is_writable_path');
 	$form->addRule('pdfreports_smtp_server_address', _("Required Field"), 'required');
 	$form->addRule('pdfreports_email_sender', _("Required Field"), 'required');
 	$form->addRule('pdfreports_report_author', _("Required Field"), 'required');
-
+	$form->addRule('pdfreports_path_gen', _("Required Field"), 'required');
+	$form->addRule('pdfreports_path_gen', _("Can't write in directory"), 'is_writable_path');
 
 	#
 	##End of form definition
@@ -115,7 +120,8 @@
 		updateOption($pearDB, "pdfreports_smtp_server_address", isset($ret["pdfreports_smtp_server_address"]) && $ret["pdfreports_smtp_server_address"] != NULL ? $ret["pdfreports_smtp_server_address"] : "127.0.0.1");
 		updateOption($pearDB, "pdfreports_email_sender", isset($ret["pdfreports_email_sender"]) && $ret["pdfreports_email_sender"] != NULL ? $ret["pdfreports_email_sender"] : "pdfreports@local.loc");
 		updateOption($pearDB, "pdfreports_report_author", isset($ret["pdfreports_report_author"]) && $ret["pdfreports_report_author"] != NULL ? $ret["pdfreports_report_author"] : "");
-		updateOption($pearDB, "pdfreports_report_header_logo", isset($ret["pdfreports_report_header_logo"]) && $ret["pdfreports_report_header_logo"] != NULL ? $ret["pdfreports_report_header_logo"] : "");	
+		updateOption($pearDB, "pdfreports_report_header_logo", isset($ret["pdfreports_report_header_logo"]) && $ret["pdfreports_report_header_logo"] != NULL ? $ret["pdfreports_report_header_logo"] : "");
+		updateOption($pearDB, "pdfreports_path_gen", isset($ret["pdfreports_path_gen"]) && $ret["pdfreports_path_gen"] != NULL ? $ret["pdfreports_path_gen"] : "/usr/local/nagios/modules/pdfreports/generatedFiles");		
 				
 		# Update in Oreon Object
 		$oreon->initOptGen($pearDB);
