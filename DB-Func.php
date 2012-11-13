@@ -31,7 +31,8 @@ error_reporting(E_ALL);
 	 * Connector to centreon DB
 	 */
 	$pearDB = new CentreonDB();
-	$pearDBndo = new CentreonDB("ndo");
+	// Bug #1556
+	//$pearDBndo = new CentreonDB("ndo");
 	$pearDBO = new CentreonDB("centstorage");
 
 	$DBRESULT =& $pearDB->query("SELECT `value` FROM `informations` WHERE `key` = 'version'");
