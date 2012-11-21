@@ -28,10 +28,10 @@
 #                                                                  #
 ####################################################################
 
-# Set CRONTAB_EXEC_USER to Apache user. 
-CRONTAB_EXEC_USER="www-data"    
+# Set CRONTAB_EXEC_USER to Apache user : www-data, apache
+CRONTAB_EXEC_USER="www-data"
 # PDFREPORTS PROCESS
-PDFREPORTS="/usr/local/centreon/www/modules/pdfreports/cron_pdfreports.php"  
+PDFREPORTS="/usr/share/centreon/www/modules/pdfreports/cron_pdfreports.php"  
 # LOGFILE                                        
 LOGFILE="/usr/share/centreon/log/pdfreports.log"
 
