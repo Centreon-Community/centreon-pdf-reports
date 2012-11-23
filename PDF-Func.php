@@ -38,10 +38,13 @@ function init_pdf_header() {
 }
 
 //function pdfGen($group_name, $start_date, $end_date,$stats,$l,$logo_header, $chart_img){
-function pdfGen($group_name, $mode = NULL, $start_date, $end_date,$stats,$l,$title){
-	
+function pdfGen($group_name, $mode = NULL, $start_date, $end_date,$stats,$l,$title, $path_www){
+		global $centreon_path;
+
+		
 		// create new PDF document
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
 		// set document information
 		$pdf->SetCreator("PDF Reports Module");
 		$pdf->SetAuthor(getGeneralOptInfo("pdfreports_report_author"));
@@ -99,16 +102,16 @@ function pdfGen($group_name, $mode = NULL, $start_date, $end_date,$stats,$l,$tit
 
 		// Pie chart Generation
 		$piechart_img = pieGen($stats,$mode);
-		
+				
 		//Data loading
 		$data = $pdf->LoadData($stats);
 
 		// print colored table
 		//$pdf->ColoredTable($header, $data,$chart_img);
 		if ($mode == "hgs") { // Hostgroup
-			$pdf->ColoredTable($header, $data,$piechart_img);
+			$pdf->ColoredTable($header, $data,$piechart_img,  $path_www );
 		} else if ($mode == "sgs") { // Servicegroup
-			$pdf->ServicesColoredTable($header, $data,$piechart_img);	
+			$pdf->ServicesColoredTable($header, $data,$piechart_img,  $path_www);	
 		}
 
 		// ---------------------------------------------------------
@@ -135,6 +138,7 @@ function pdfGen($group_name, $mode = NULL, $start_date, $end_date,$stats,$l,$tit
 */
 function pieGen($stats, $mode) {
 	
+	global $centreon_path;
 	// Create and populate the pData object 
 	 $MyData = new pData();   
 	 
@@ -264,15 +268,14 @@ function pieGen($stats, $mode) {
 	
 	 // Draw a splitted pie chart 
 	 $PieChart->draw3DPie(60,70,array("Radius"=>50,"DataGapAngle"=>8,"DataGapRadius"=>6,"Border"=>TRUE,"BorderR"=>0,"BorderG"=>0,"BorderB"=>0));
-	// $PieChart->draw2DPie($myPicture,$MyData,60,70,array("DataGapAngle"=>12,"DataGapRadius"=>10,"Border"=>TRUE,"BorderR"=>255,"BorderG"=>255,"BorderB"=>255));
-	//$PieChart->draw2DPie(60,70,array("SecondPass"=>FALSE));
-	//$PieChart->draw2DPie(60,60,array("SecondPass"=>TRUE,"Border"=>TRUE,"BorderR"=>0,"BorderG"=>0,"BorderB"=>0));
-	 /* Render the picture (choose the best way) */
+
+	 /* Render the picture  */
 	 
-	$pie_file = tempnam( "/tmp" , "reportreon_pie_" ); 
-	 
-	$myPicture->autoOutput($pie_file . ".png");
-	// $centreon_path . "/www/modules/pdfreports/example.draw3DPie.transparent.png"
+//	$pie_file = tempnam( "/tmp" , "reportreon_pie_" ); 
+	$pie_file = tempnam( $centreon_path . "/www/modules/pdfreports/generatedFiles/tmp" , "reportreon_pie_" ); 
+	
+	$myPicture->render($pie_file . ".png");
+	@unlink($pie_file );
 
 	return  $pie_file  . ".png" ;
 }

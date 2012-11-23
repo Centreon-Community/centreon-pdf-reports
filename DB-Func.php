@@ -25,6 +25,21 @@ error_reporting(E_ALL);
 */
 	require_once($centreon_path . "www/class/centreonDB.class.php");
 	require_once($centreon_path . "www/include/common/common-Func.php");
+        require_once($centreon_path . 'www/class/centreonDB.class.php');
+        require_once($centreon_path . 'www/class/centreonAuth.class.php');
+        require_once($centreon_path . 'www/class/centreonLog.class.php');
+        require_once($centreon_path . 'www/class/centreonUser.class.php');
+        require_once($centreon_path . 'www/class/centreonSession.class.php');   
+        require_once($centreon_path . 'www/class/centreon.class.php');
+        require_once($centreon_path . 'www/class/centreonACL.class.php');  
+        include_once $centreon_path . 'www/include/reporting/dashboard/DB-Func.php';  
+        include_once $centreon_path . "www/include/common/common-Func.php";
+        require_once("Mail-Func.php");
+        require_once("PDF-Func.php");
+        require_once("DB-Func.php");
+
+
+
 
 	## Get centreon version
 	/*
@@ -258,12 +273,8 @@ function getContactEmail($contact_id = NULL) {
 	# Set base value
 	$email =  $DBRESULT->fetchRow();
 	$DBRESULT->free();	
-	return $email['contact_email'];
-	
-	
+	return $email['contact_email'];	
 }
-
-
 
 
 function getHostReport($report_id) {
@@ -279,8 +290,7 @@ function getHostReport($report_id) {
 			$hosts["report_hs"][$parent["host_host_id"]] = $parent["host_host_id"];
 		else if ($parent["hostgroup_hg_id"])
 			$hosts["report_hgs"][$parent["hostgroup_hg_id"]] = $parent["hostgroup_hg_id"];
-	}
-	
+	}	
 	return $hosts;
 	
 }
@@ -483,6 +493,52 @@ function getServiceGroupReport($report_id) {
 		//	$oreon->CentreonLogAction->insertLog("service", $key, getHostServiceCombo($key, $row['service_description']), "disable");
 		}
 	}
+
+	function RunNowReportInDB ($report_id = null, $report_arr = array()) {
+
+            if (!$report_id && !count($report_arr)) return;
+            global $pearDB, $oreon;
+            $hosts = array();
+            $reportinfo = array();
+            $hosts = getHostReport($report_id);
+            $reportinfo = getReportInfo($report_id);
+            $services = getServiceGroupReport($report_id);
+            $dates = getPeriodToReportFork($reportinfo['period']);
+            $start_date = $dates[0] ;
+            $end_date = $dates[1];
+            
+            $reportingTimePeriod = getreportingTimePeriod();
+            
+            
+            if (isset($hosts) && count($hosts) > 0) {
+                foreach ( $hosts['report_hgs'] as $hgs_id ) {
+                    $stats = array();
+                    $stats = getLogInDbForHostGroup($hgs_id , $start_date, $end_date, $reportingTimePeriod);
+                    $Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, "" , $reportinfo["report_title"] , "/../.."  );
+                    //print_r($Allfiles);
+                }
+            }
+            if (isset( $services ) && count($services) > 0 ) {
+                foreach ( $services['report_sg'] as $sg_id ) {
+                    $sg_stats = array();
+                    $sg_stats = getLogInDbForServicesGroup($sg_id , $start_date, $end_date, $reportingTimePeriod);
+                    $Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l,  $reportinfo["report_title"] , "/../..");
+                }
+            }
+            $emails = getReportContactEmail($report_id);
+            $files = array();
+            foreach ( $Allfiles as $file) {
+                $files[basename($file)]["url"] = $file;
+            }
+
+            mailer(getGeneralOptInfo("pdfreports_report_author"),getGeneralOptInfo("pdfreports_email_sender"),$emails,$reportinfo['subject'],$reportinfo['mail_body'] , getGeneralOptInfo("pdfreports_smtp_server_address"),$files,$reportinfo['name'] );
+            $files = null;
+            $Allfiles = null;
+            $emails = null;
+            $services = null ;
+            $hosts = null;
+	}
+
 	function deleteReportInDB ($reports = array())	{
 		global $pearDB, $oreon;
 

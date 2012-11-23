@@ -73,6 +73,7 @@ error_reporting(E_ALL);
 		case "s" 	: enableReportInDB($report_id); require_once($path."listReport.php"); break; #Activate a host
 		case "ms" 	: enableReportInDB(NULL, isset($select) ? $select : array()); require_once($path."listReport.php"); break;
 		case "u" 	: disableReportInDB($report_id); require_once($path."listReport.php"); break; #Desactivate a host
+		case "rn" 	: require_once($path."listReport.php"); RunNowReportInDB($report_id); break; # Run reportNow
 		case "mu" 	: disableReportInDB(NULL, isset($select) ? $select : array()); require_once($path."listReport.php"); break;
 		case "m" 	: multipleReportInDB(isset($select) ? $select : array(), $dupNbr); require_once($path."listReport.php"); break; #Duplicate n hosts
 		case "d" 	: deleteReportInDB(isset($select) ? $select : array()); require_once($path."listReport.php"); break; #Delete n hosts

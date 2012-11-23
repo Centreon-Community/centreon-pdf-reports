@@ -57,8 +57,10 @@ class MYPDF extends TCPDF {
     }
 
 
-  public  function ColoredTable($header,$data,$piechart_img) {
+  public  function ColoredTable($header,$data,$piechart_img, $path_www) {
 
+
+	$piechart_img_www = $path_www . $piechart_img ;
 	// Colors, line width and bold font
         $this->SetFillColor(255, 0, 0);
         $this->SetTextColor(255);
@@ -152,7 +154,7 @@ EOD;
 	$tbl1 = <<<EOD
 		<table border="1" align="center">
 		  <tr  style="background-color:#F7FAFF;">
-			  <td rowspan="$ROWSPAN" border="0" width="125" align="center" valign="center" ><img src="$piechart_img" /></td>
+			  <td rowspan="$ROWSPAN" border="0" width="125" align="center" valign="center" ><img src="$piechart_img_www" /></td>
 			  <td colspan="4" style="background-color:#D7D6DD;" >Hosts group state</td>
 		  </tr>
 		  <tr style="background-color:#D5DFEB;">
@@ -322,7 +324,9 @@ $this->writeHTML($tbl2, true, false, false, false, '');
 /* pour les services groupes */
     
     // Colored table
-public function ServicesColoredTable($header,$data,$piechart_img) {
+public function ServicesColoredTable($header,$data,$piechart_img,  $path_www) {
+
+	$piechart_img_www =    $path_www . $piechart_img ;
         // Colors, line width and bold font
         $this->SetFillColor(255, 0, 0);
         $this->SetTextColor(255);
@@ -458,7 +462,7 @@ EOD;
 	$tbl1 = <<<EOD
 <table border="1" align="center">
 	<tr   border="0" >
-	<td rowspan="$ROWSPAN" border="0" width="125" align="center" valign="center" ><img src="$piechart_img" /></td>
+	<td rowspan="$ROWSPAN" border="0" width="125" align="center" valign="center" ><img src="$piechart_img_www" /></td>
 	<td colspan="4"  style="background-color:#D7D7DD;" >Services group state</td>
 	</tr>
 <tr>
@@ -628,8 +632,8 @@ $this->writeHTML($tbl1, true, false, false, false, '');
 $this->writeHTML($tbl2, true, false, false, false, ''); 
 
 //
-@unlink($piechart_img) ;
 
+@unlink($piechart_img) ;
 
     } 
 

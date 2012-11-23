@@ -146,7 +146,7 @@
 				
 				//print_r($stats);
 				//tableau contenant la liste des pdf générés
-				$Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, $l , $reportinfo["report_title"]  );
+				$Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, $l , $reportinfo["report_title"] , "" );
 				//$Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, $l, getGeneralOptInfo("pdfreports_report_header_logo") , $reportinfo["report_title"]  );
 				
 				//print_r($Allfiles); 
@@ -162,7 +162,7 @@
 				//print_r($stats);				
 
 				//tableau contenant la liste des pdf générés
-				$Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l,  $reportinfo["report_title"]);
+				$Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l,  $reportinfo["report_title"] , "");
 				//$Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l, getGeneralOptInfo("pdfreports_report_header_logo") , $reportinfo["report_title"]  );
 				
 				//print_r($Allfiles); 
