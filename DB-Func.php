@@ -509,12 +509,19 @@ function getServiceGroupReport($report_id) {
             
             $reportingTimePeriod = getreportingTimePeriod();
             
-            
+	    if (isset($_SERVER['DOCUMENT_ROOT']) ) {
+		
+			$nb_folders = count(explode( "/", $_SERVER['DOCUMENT_ROOT'] )); 
+			$path_www = "/". implode( "/", array_fill(0, intval($nb_folders) - 1, '..'));
+			//echo $_SERVER['DOCUMENT_ROOT'] . "  " . intval($nb_folders) -1 . "  " .  $path_www . "<br />";	
+		}
+
+
             if (isset($hosts) && count($hosts) > 0) {
                 foreach ( $hosts['report_hgs'] as $hgs_id ) {
                     $stats = array();
                     $stats = getLogInDbForHostGroup($hgs_id , $start_date, $end_date, $reportingTimePeriod);
-                    $Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, "" , $reportinfo["report_title"] , "/../.."  );
+                    $Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, "" , $reportinfo["report_title"] , $path_www  ); // "/../.."
                     //print_r($Allfiles);
                 }
             }
@@ -522,7 +529,7 @@ function getServiceGroupReport($report_id) {
                 foreach ( $services['report_sg'] as $sg_id ) {
                     $sg_stats = array();
                     $sg_stats = getLogInDbForServicesGroup($sg_id , $start_date, $end_date, $reportingTimePeriod);
-                    $Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l,  $reportinfo["report_title"] , "/../..");
+                    $Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l,  $reportinfo["report_title"] , $path_www );
                 }
             }
             $emails = getReportContactEmail($report_id);
