@@ -1,0 +1,42 @@
+{$form.javascript}
+{$insertValueQuery}
+<form {$form.attributes}>
+	<div id="validFormTop">
+	{if $o == "a" || $o == "c"}
+		<p class="oreonbutton">{$form.submitC.html}{$form.submitA.html}&nbsp;&nbsp;&nbsp;{$form.reset.html}</p>
+	{else if $o == "w"}
+		<p class="oreonbutton">{$form.change.html}</p>
+	{/if}
+	</div>
+	<div id='tab1' class='tab'>
+	 <table class="ListTable">
+	 	<tr class="ListHeader"><td class="FormHeader" colspan="2"><img src='./img/icones/16x16/funnel_new.gif'>&nbsp;&nbsp;{$form.header.title}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.name.label}</td><td class="FormRowValue">{$form.name.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.report_description.label}</td><td class="FormRowValue">{$form.report_description.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.activate.label}</td><td class="FormRowValue">{$form.activate.html}</td></tr>
+		
+		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/text_rich_marked.gif'>&nbsp;&nbsp;{$form.header.report_information}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.report_title.label}</td><td class="FormRowValue">{$form.report_title.html}</td></tr>			
+		<tr class="list_two"><td class="FormRowField">{$form.subject.label}</td><td class="FormRowValue">{$form.subject.html}</td></tr>		
+		<tr class="list_one"><td class="FormRowField">{$form.mail_body.label}</td><td class="FormRowValue">{$form.mail_body.html}</td></tr>		
+		<tr class="list_two"><td class="FormRowField">{$form.period.label}</td><td class="FormRowValue">{$form.period.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.report_hgs.label}</td><td class="FormRowValue">{$form.report_hgs.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.report_sg.label}</td><td class="FormRowValue">{$form.report_sg.html}</td></tr>		
+		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/mailer.gif'>&nbsp;&nbsp;{$form.header.notification}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.report_cs.label}</td><td class="FormRowValue">{$form.report_cs.html}</td></tr>		
+		<tr class="list_one"><td class="FormRowField">{$form.report_cgs.label}</td><td class="FormRowValue">{$form.report_cgs.html}</td></tr>
+		
+		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$form.header.furtherInfos}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.report_comment.label}</td><td class="FormRowValue">{$form.report_comment.html}</td></tr>
+	</table>
+	</div>
+	<div id="validForm">
+	{if $o == "a" || $o == "c"}
+		<p>{$form.action.html}</p>
+		<p class="oreonbutton">{$form.submitC.html}{$form.submitA.html}&nbsp;&nbsp;&nbsp;{$form.reset.html}</p>
+	{else if $o == "w"}
+		<p class="oreonbutton">{$form.change.html}</p>
+	{/if}
+	</div>
+	{$form.hidden}
+</form>
