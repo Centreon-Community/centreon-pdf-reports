@@ -19,6 +19,12 @@ Administration -> Modules -> pdfreports -> install
 
 4. Customize it 
 
+Administration -> Options -> PDF Reports
+
+5. Create Reports
+
+Configuration -> PDF Reports
+
 
 
 Find more there: http://community.centreon.com/projects/pdfreports/
