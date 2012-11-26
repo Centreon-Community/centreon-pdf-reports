@@ -510,7 +510,6 @@ function getServiceGroupReport($report_id) {
             $reportingTimePeriod = getreportingTimePeriod();
             
 	    if (isset($_SERVER['DOCUMENT_ROOT']) ) {
-		
 			$nb_folders = count(explode( "/", $_SERVER['DOCUMENT_ROOT'] )); 
 			$path_www = "/". implode( "/", array_fill(0, intval($nb_folders) - 1, '..'));
 			//echo $_SERVER['DOCUMENT_ROOT'] . "  " . intval($nb_folders) -1 . "  " .  $path_www . "<br />";	
@@ -521,7 +520,7 @@ function getServiceGroupReport($report_id) {
                 foreach ( $hosts['report_hgs'] as $hgs_id ) {
                     $stats = array();
                     $stats = getLogInDbForHostGroup($hgs_id , $start_date, $end_date, $reportingTimePeriod);
-                    $Allfiles[] = pdfGen( getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, "" , $reportinfo["report_title"] , $path_www  ); // "/../.."
+                    $Allfiles[] = pdfGen($report_id, getMyHostGroupName($hgs_id), 'hgs', $start_date, $end_date, $stats, "" , $reportinfo["report_title"] , $path_www  ); // "/../.."
                     //print_r($Allfiles);
                 }
             }
@@ -529,7 +528,7 @@ function getServiceGroupReport($report_id) {
                 foreach ( $services['report_sg'] as $sg_id ) {
                     $sg_stats = array();
                     $sg_stats = getLogInDbForServicesGroup($sg_id , $start_date, $end_date, $reportingTimePeriod);
-                    $Allfiles[] = pdfGen( getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l,  $reportinfo["report_title"] , $path_www );
+                    $Allfiles[] = pdfGen($report_id, getMyServiceGroupName($sg_id), 'sgs', $start_date, $end_date, $sg_stats, $l,  $reportinfo["report_title"] , $path_www );
                 }
             }
             $emails = getReportContactEmail($report_id);
@@ -665,7 +664,7 @@ function getServiceGroupReport($report_id) {
 			$ret["service_alias"] = str_replace('\\', "#BS#", $ret["service_alias"]);
 		}*/
 		$rq = "INSERT INTO pdfreports_reports " .
-				"(name, report_description, period, report_title, subject, mail_body, report_comment, activate) " .
+				"(name, report_description, period, report_title, subject, mail_body, retention, report_comment, activate) " .
 				"VALUES ( ";
 				isset($ret["name"]) && $ret["name"] != NULL ? $rq .= "'".$ret["name"]."', ": $rq .= "NULL, ";
 				isset($ret["report_description"]) && $ret["report_description"] != NULL ? $rq .= "'".addslashes(htmlentities($ret["report_description"], ENT_QUOTES))."', ": $rq .= "NULL, ";
@@ -673,6 +672,8 @@ function getServiceGroupReport($report_id) {
 				isset($ret["report_title"]) && $ret["report_title"] != NULL ? $rq .= "'".$ret["report_title"]."', ": $rq .= "NULL, ";				
 				isset($ret["subject"]) && $ret["subject"] != NULL ? $rq .= "'".addslashes(htmlentities($ret["subject"], ENT_QUOTES))."', ": $rq .= "NULL, ";
 				isset($ret["mail_body"]) && $ret["mail_body"] != NULL ? $rq .= "'".addslashes(htmlentities($ret["mail_body"], ENT_QUOTES))."', ": $rq .= "NULL, ";
+				isset($ret["retention"]) && $ret["retention"] != NULL ? $rq .= "'".addslashes(htmlentities($ret["retention"], ENT_QUOTES))."', ": $rq .= "NULL, ";
+
 
 				if (isset($ret["report_comment"]) && $ret["report_comment"])	{
 					$ret["report_comment"] = str_replace('/', "#S#", $ret["report_comment"]);
@@ -692,7 +693,8 @@ function getServiceGroupReport($report_id) {
 		$fields["period"] = $ret["period"];
 		$fields["report_title"] = $ret["report_title"];
 		$fields["subject"] = htmlentities($ret["subject"], ENT_QUOTES);	
-		$fields["mail_body"] = htmlentities($ret["mail_body"], ENT_QUOTES);			
+		$fields["mail_body"] = htmlentities($ret["mail_body"], ENT_QUOTES);	
+		$fields["retention"] = htmlentities($ret["retention"], ENT_QUOTES);		
 		$fields["report_comment"] = htmlentities($ret["report_comment"], ENT_QUOTES);
 
 		return (array("report_id" => $report_id["MAX(report_id)"], "fields" => $fields));
@@ -726,6 +728,8 @@ function getServiceGroupReport($report_id) {
 		isset($ret["subject"]) && $ret["subject"] != NULL ? $rq .= "'".addslashes(htmlentities($ret["subject"], ENT_QUOTES))."', ": $rq .= "NULL, ";		
 		$rq .= "mail_body = ";
 		isset($ret["mail_body"]) && $ret["mail_body"] != NULL ? $rq .= "'".addslashes(htmlentities($ret["mail_body"], ENT_QUOTES))."', ": $rq .= "NULL, ";
+		$rq .= "retention = ";
+		isset($ret["retention"]) && $ret["retention"] != NULL ? $rq .= "'".addslashes(htmlentities($ret["retention"], ENT_QUOTES))."', ": $rq .= "4, ";
 
 		$rq .= "report_comment = ";
 		$ret["report_comment"] = str_replace("/", '#S#', $ret["report_comment"]);
@@ -743,7 +747,8 @@ function getServiceGroupReport($report_id) {
 		$fields["period"] = $ret["period"];
 		$fields["report_title"] = $ret["report_title"];		
 		$fields["subject"] = htmlentities($ret["subject"], ENT_QUOTES);
-		$fields["mail_body"] = htmlentities($ret["mail_body"], ENT_QUOTES);			
+		$fields["mail_body"] = htmlentities($ret["mail_body"], ENT_QUOTES);
+		$fields["retention"] = htmlentities($ret["retention"], ENT_QUOTES);			
 		$fields["report_comment"] = htmlentities($ret["report_comment"], ENT_QUOTES);
 		//$oreon->CentreonLogAction->insertLog("service", $service_id["MAX(service_id)"], getHostServiceCombo($service_id, htmlentities($ret["service_description"], ENT_QUOTES)), "c", $fields);
 		//$oreon->user->access->updateACL();
@@ -779,6 +784,11 @@ function getServiceGroupReport($report_id) {
 		if (isset($ret["mail_body"]) && $ret["mail_body"] != NULL) {
 			$rq .= "mail_body = '".htmlentities($ret["mail_body"], ENT_QUOTES)."', ";
 			$fields["mail_body"] = htmlentities($ret["mail_body"], ENT_QUOTES);
+		}
+
+		if (isset($ret["retention"]) && $ret["retention"] != NULL) {
+			$rq .= "retention = '".htmlentities($ret["retention"], ENT_QUOTES)."', ";
+			$fields["retention"] = htmlentities($ret["retention"], ENT_QUOTES);
 		}
 
 		if (isset($ret["report_activate"]["report_activate"]) && $ret["report_activate"]["report_activate"] != NULL) {

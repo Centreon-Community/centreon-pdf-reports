@@ -134,6 +134,7 @@ error_reporting(E_ALL);
 	# Var information to format the element
 	#
 	$attrsText 		= array("size"=>"50");
+	$attrsText2		= array("size"=>"6");
 	$attrsTextarea 	= array("rows"=>"5", "cols"=>"40");
 	$attrsAdvSelect 	= array("style" => "width: 270px; height: 100px;");
 	$attrsAdvSelectsmall= array("style" => "width: 270px; height: 50px;");
@@ -153,7 +154,8 @@ error_reporting(E_ALL);
 		$form->addElement('header', 'title', _("Massive Change"));		
 
 	$form->addElement('header', 'report_information', _("Report Information"));
-	$form->addElement('header', 'notification', _("Notification"));	
+	$form->addElement('header', 'notification', _("Notification"));
+	$form->addElement('header', 'report_purge', _("Purge / Retention"));		
 	$form->addElement('header', 'furtherInfos', _("Additional Information"));
 
 
@@ -225,6 +227,11 @@ error_reporting(E_ALL);
 
 
 	#
+	## Purge options
+	#
+	$form->addElement('text', 'retention', _("Keep <b>x</b> reports"), $attrsText2);
+
+	#
 	## Further informations
 	#
 	$form->addElement('hidden', 'report_id');
@@ -251,6 +258,7 @@ error_reporting(E_ALL);
 	$form->addRule('report_title', _("Compulsory Title"), 'required');	
 	//$form->addRule('report_hgs', _("Compulsory Hostgroup"), 'required');
 	$form->addRule('report_cgs', _("Compulsory Contactgroup"), 'required');
+	$form->addRule('retention', _("Compulsory"), 'required');
 
 	$form->setRequiredNote("<font style='color: red;'>*</font>&nbsp;". _("Required fields"));
 
@@ -265,14 +273,14 @@ error_reporting(E_ALL);
 	# Just watch a Command information
 	if ($o == "w")	{
 		$form->addElement("button", "change", _("Modify"), array("onClick"=>"javascript:window.location.href='?p=".$p."&o=c&report_id=".$report_id."'"));
-	    $form->setDefaults($report);
+	    	$form->setDefaults($report);
 		$form->freeze();
 	}
 	# Modify a Command information
 	else if ($o == "c")	{
 		$subC =& $form->addElement('submit', 'submitC', _("Save"));
 		$res =& $form->addElement('reset', 'reset', _("Reset"));
-	    $form->setDefaults($report);
+	    	$form->setDefaults($report);
 	}
 	# Add a Command information
 	else if ($o == "a")	{
@@ -297,7 +305,7 @@ error_reporting(E_ALL);
 		require_once($path."listReport.php");
 	else	{
 		##Apply a template definition
-		$renderer =& new HTML_QuickForm_Renderer_ArraySmarty($tpl);
+		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($tpl);
 		$renderer->setRequiredTemplate('{$label}&nbsp;<font color="red" size="1">*</font>');
 		$renderer->setErrorTemplate('<font color="red">{$error}</font><br />{$html}');
 		$form->accept($renderer);

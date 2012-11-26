@@ -25,6 +25,9 @@
 		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/mailer.gif'>&nbsp;&nbsp;{$form.header.notification}</td></tr>
 		<tr class="list_one"><td class="FormRowField">{$form.report_cs.label}</td><td class="FormRowValue">{$form.report_cs.html}</td></tr>		
 		<tr class="list_one"><td class="FormRowField">{$form.report_cgs.label}</td><td class="FormRowValue">{$form.report_cgs.html}</td></tr>
+
+		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/garbage_empty.gif'>&nbsp;&nbsp;{$form.header.report_purge}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.retention.label}</td><td class="FormRowValue">{$form.retention.html}</td></tr>
 		
 		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$form.header.furtherInfos}</td></tr>
 		<tr class="list_one"><td class="FormRowField">{$form.report_comment.label}</td><td class="FormRowValue">{$form.report_comment.html}</td></tr>
