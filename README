@@ -1,0 +1,25 @@
+=======================================================
+=  PDF Reports
+=======================================================
+
+In order to install PDF Reports Module, follow the 
+next step :
+
+1. Unzip files 
+
+#> tar -xzf pdfreports-1.0.tar.gz
+
+2. run installer file
+
+#> pdfreports/install.sh -i /etc/centreon
+
+3. Install module into Centreon GUI
+
+Administration -> Modules -> pdfreports -> install
+
+4. Customize it 
+
+
+
+Find more there: http://community.centreon.com/projects/pdfreports/
+Or on IRC : freenode, #Centreon
