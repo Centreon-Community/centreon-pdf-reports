@@ -24,7 +24,7 @@
 	/**
 	 * Configuration file
 	 */
-	$centreonConf = "/etc/centreon/centreon.conf.php";
+	$centreonConf = "@CENTREON_ETC@/centreon.conf.php";
 
 
 	/* ***********************************************
