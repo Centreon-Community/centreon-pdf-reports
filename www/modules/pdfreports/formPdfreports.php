@@ -76,6 +76,7 @@
 	$form->addElement('select', 'pdfreports_report_header_logo', _("Header Logo"), $logoImg, array("id"=>"pdfreports_report_header_logo"));
 	$form->addElement('text', 'pdfreports_path_gen', _("Path to report files"), $attrsText);
 
+
 	#
 	## Form Rules
 	#
@@ -121,7 +122,7 @@
 		updateOption($pearDB, "pdfreports_email_sender", isset($ret["pdfreports_email_sender"]) && $ret["pdfreports_email_sender"] != NULL ? $ret["pdfreports_email_sender"] : "pdfreports@local.loc");
 		updateOption($pearDB, "pdfreports_report_author", isset($ret["pdfreports_report_author"]) && $ret["pdfreports_report_author"] != NULL ? $ret["pdfreports_report_author"] : "");
 		updateOption($pearDB, "pdfreports_report_header_logo", isset($ret["pdfreports_report_header_logo"]) && $ret["pdfreports_report_header_logo"] != NULL ? $ret["pdfreports_report_header_logo"] : "");
-		updateOption($pearDB, "pdfreports_path_gen", isset($ret["pdfreports_path_gen"]) && $ret["pdfreports_path_gen"] != NULL ? $ret["pdfreports_path_gen"] : "/usr/local/nagios/modules/pdfreports/generatedFiles");		
+		updateOption($pearDB, "pdfreports_path_gen", isset($ret["pdfreports_path_gen"]) && $ret["pdfreports_path_gen"] != NULL ? $ret["pdfreports_path_gen"] : "/usr/local/centreon/www/modules/pdfreports/generatedFiles/");	
 				
 		# Update in Oreon Object
 		$oreon->initOptGen($pearDB);
