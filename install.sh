@@ -38,6 +38,7 @@
 # List of files containing macros
 MACRO_FILE_1="www/modules/pdfreports/files/pdfreports"
 MACRO_FILE_2="www/modules/pdfreports/cron_pdfreports.php"
+MACRO_FILE_3="www/modules/pdfreports/cron_pdfreports.php"
 
 # Define Centreon Config Books version
 NAME="pdfreports"
@@ -149,6 +150,7 @@ function install_module() {
 	echo_success "Replacing macros" "$ok"
 	replace_macro $TEMP_D/$MACRO_FILE_1
 	replace_macro $TEMP_D/$MACRO_FILE_2
+	replace_macro $TEMP_D/$MACRO_FILE_3
 
 	echo_success "Setting right" "$ok"
 	chmod -R 755 $TEMP_D/* >> $LOG_FILE 2>> $LOG_FILE
