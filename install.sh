@@ -38,7 +38,7 @@
 # List of files containing macros
 MACRO_FILE_1="www/modules/pdfreports/files/pdfreports"
 MACRO_FILE_2="www/modules/pdfreports/cron_pdfreports.php"
-MACRO_FILE_3="www/modules/pdfreports/cron_pdfreports.php"
+MACRO_FILE_3="www/modules/pdfreports/cron_pdfreports_purge.php"
 
 # Define Centreon Config Books version
 NAME="pdfreports"
