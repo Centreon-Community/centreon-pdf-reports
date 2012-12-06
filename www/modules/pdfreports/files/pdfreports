@@ -40,9 +40,9 @@ LOGFILE_PURGE="@LOG_DIR_CENTREON@/pdfreports_purge.log"
 
 ############################
 # daily at 4 am
-0 4 * * * $CRONTAB_EXEC_USER /usr/bin/php -q $PDFREPORTSPURGE >> $LOGFILE 2>&1
+0 4 * * * $CRONTAB_EXEC_USER /usr/bin/php -q $PDFREPORTSPURGE >> $LOGFILE_PURGE 2>&1
 
-0 5 * * * $CRONTAB_EXEC_USER /usr/bin/php -q $PDFREPORTS yesterday >> $LOGFILE_PURGE 2>&1
+0 5 * * * $CRONTAB_EXEC_USER /usr/bin/php -q $PDFREPORTS yesterday >> $LOGFILE 2>&1
 
 # weekely at 3 am
 0 3 * * 0 $CRONTAB_EXEC_USER /usr/bin/php -q $PDFREPORTS thisweek >> $LOGFILE 2>&1
