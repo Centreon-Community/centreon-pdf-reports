@@ -35,11 +35,6 @@
 # SVN : $Id$
 # 
 
-# List of files containing macros
-MACRO_FILE_1="www/modules/pdfreports/files/pdfreports"
-MACRO_FILE_2="www/modules/pdfreports/cron_pdfreports.php"
-MACRO_FILE_3="www/modules/pdfreports/cron_pdfreports_purge.php"
-
 # Define Centreon Config Books version
 NAME="pdfreports"
 VERSION="1.0"
@@ -148,9 +143,10 @@ function install_module() {
 	/bin/rm -Rf $TEMP_D/install $TEMP_D/*.log
 
 	echo_success "Replacing macros" "$ok"
-	replace_macro $TEMP_D/$MACRO_FILE_1
-	replace_macro $TEMP_D/$MACRO_FILE_2
-	replace_macro $TEMP_D/$MACRO_FILE_3
+    find $TEMP_D -type f -exec echo {} > file_list \;
+    for line in $(cat file_list); do replace_macro $line; done
+
+
 
 	echo_success "Setting right" "$ok"
 	chmod -R 755 $TEMP_D/* >> $LOG_FILE 2>> $LOG_FILE
